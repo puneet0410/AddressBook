@@ -33,6 +33,19 @@ public class AddressBookController {
     public ResponseEntity<AddressBook> addContact(@RequestBody AddressBookDTO addressBookDTO) {
         return ResponseEntity.ok(addressBookService.addContact(addressBookDTO));
     }
+    @PutMapping("/{id}")
+    public ResponseEntity<AddressBook> updateContact(@PathVariable int id, @RequestBody AddressBookDTO addressBookDTO) {
+        return addressBookService.updateContact(id, addressBookDTO)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteContact(@PathVariable int id) {
+        if (addressBookService.deleteContact(id)) {
+            return ResponseEntity.ok("Contact deleted successfully.");
+        }
+        return ResponseEntity.notFound().build();
+    }
 
 }
